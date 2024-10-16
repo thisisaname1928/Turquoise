@@ -1,5 +1,6 @@
 #include "kernel/arch/x86_64/IDT.hpp"
 #include "kernel/arch/x86_64/exceptions/exceptions.hpp"
+#include "kernel/memoryAllocation.hpp"
 #include "kernel/psf/psf.hpp"
 #include "kernel/state.hpp"
 #include "kprintf.hpp"
@@ -105,7 +106,12 @@ void kmain(limine_framebuffer *frameBuffer, limine_memmap_response *memMap,
           checkPage((uint64_t)kmain));
 
   uint64_t a = allocPage(64);
-  // deallocPage(a, 1);
-  uint64_t b = allocPage(64);
-  kprintf("Alloc test: 0x%x, 0x%x, %u\n", a, b, (uint64_t)(b - a));
+  allocator kernelAllocator;
+  kernelAllocator.init(a, 64 * 4096);
+  void *b = kernelAllocator.alloc(1);
+  void *c = kernelAllocator.alloc(1);
+  void *d = kernelAllocator.alloc(1);
+  kernelAllocator.free(c);
+  void *l = kernelAllocator.alloc(1);
+  kprintf("0x%x\n", l);
 }
