@@ -110,8 +110,7 @@ void kmain(limine_framebuffer *frameBuffer, limine_memmap_response *memMap,
   kernelAllocator.init(a, 64 * 4096);
   void *b = kernelAllocator.alloc(1);
   void *c = kernelAllocator.alloc(1);
-  void *d = kernelAllocator.alloc(1);
   kernelAllocator.free(c);
-  void *l = kernelAllocator.alloc(1);
-  kprintf("0x%x\n", l);
+  void *d = kernelAllocator.alloc(1);
+  kprintf("0x%x 0x%x\n", d, c);
 }

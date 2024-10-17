@@ -20,7 +20,7 @@ CPP_FLAGS = -I ../ -I ./ -Wall \
 	-mno-red-zone \
 	-mcmodel=kernel
 CPP_SRCS = $(shell find . -type f -name '*.cpp')
-CPP_OBJS = $(patsubst %.cpp, %.o, $(CPP_SRCS))
+CPP_OBJS = $(patsubst %.cpp, %.cpp.o, $(CPP_SRCS))
 LD = ld
 LD_FLAGS = -m elf_x86_64 \
 	-nostdlib \
@@ -36,7 +36,7 @@ $(OUTPUT): $(CPP_OBJS) $(ASM_OBJS) makefile linker.ld
 	@$(LD) $(LD_FLAGS) $(CPP_OBJS) $(EMBED_FILE_OBJ) $(ASM_OBJS) -o $ $(OUTPUT)
 	
 
-%.o: %.cpp makefile
+%.cpp.o: %.cpp makefile
 	@printf "\e[0;37m[CPP] $< \e[1;31m...\e[0;37m\r"
 	@$(CPP) $(CPP_FLAGS) -c $< -o $@
 	@printf "\e[0;37m[CPP] $< \e[1;32mOK \e[0;37m\n"
