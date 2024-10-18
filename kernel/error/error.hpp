@@ -4,6 +4,7 @@
 enum kernelErrors {
   OUT_OF_MEMORY,
   ACCESS_VIOLENCE,
+  ACPI_TABLE_PARSING_FAILED,
 };
 
 void kernelErrorHandler(uint64_t err, int line, const char *fn,

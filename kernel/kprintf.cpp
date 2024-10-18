@@ -154,6 +154,12 @@ void printbin(uint64_t num) {
   }
 }
 
+void printstr(const char *st, uint64_t length) {
+  for (int i = 0; i < length; i++) {
+    printchar(st[i]);
+  }
+}
+
 void kprintf(const char *fmt, ...) {
   getReg();
   uint64_t buf[5];

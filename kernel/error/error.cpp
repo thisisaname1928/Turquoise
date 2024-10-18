@@ -20,6 +20,9 @@ void kernelErrorHandler(uint64_t err, int line, const char *fn,
       break;
     }
     break;
+  case ACPI_TABLE_PARSING_FAILED:
+    kprintf("ACPI tables parsing failed, maybe the kernel cannot work!\n");
+    break;
   default:
     return;
   }

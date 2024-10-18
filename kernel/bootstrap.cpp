@@ -25,6 +25,13 @@ __attribute__((used,
 
 __attribute__((
     used,
+    section(
+        ".requests"))) static volatile struct limine_rsdp_request rsdpRequest {
+  .id = LIMINE_RSDP_REQUEST, .revision = 0, .response = nullptr
+};
+
+__attribute__((
+    used,
     section(".requests"))) static volatile struct limine_paging_mode_request
     pagingModeRequest = {.id = LIMINE_PAGING_MODE_REQUEST,
                          .revision = 0,
@@ -99,7 +106,7 @@ void halt() {
 }
 
 extern void kmain(limine_framebuffer *, limine_memmap_response *,
-                  limine_hhdm_response *);
+                  limine_hhdm_response *, limine_rsdp_response *);
 
 // let kernel control
 void _start() {
@@ -110,7 +117,7 @@ void _start() {
   }
 
   kmain(limineFrameBufferResponse->framebuffers[0], memoryMapRequest.response,
-        hhdmRequest.response);
+        hhdmRequest.response, rsdpRequest.response);
 
   halt();
 }

@@ -1,5 +1,6 @@
 #include "kernel/arch/x86_64/IDT.hpp"
 #include "kernel/arch/x86_64/exceptions/exceptions.hpp"
+#include "kernel/driver/acpi/acpiTable.hpp"
 #include "kernel/memoryAllocation.hpp"
 #include "kernel/psf/psf.hpp"
 #include "kernel/state.hpp"
@@ -60,7 +61,7 @@ uint32_t *fba;
 uint64_t virtualAddressOffset = 0;
 limine_memmap_response *memoryMap;
 void kmain(limine_framebuffer *frameBuffer, limine_memmap_response *memMap,
-           limine_hhdm_response *hhdm) {
+           limine_hhdm_response *hhdm, limine_rsdp_response *rsdpResponse) {
 
   setKernelState(EARLY_KERNEL_INITIALIZATION);
 
@@ -68,6 +69,7 @@ void kmain(limine_framebuffer *frameBuffer, limine_memmap_response *memMap,
   fba = (uint32_t *)frameBuffer->address;
   virtualAddressOffset = hhdm->offset;
   memoryMap = memMap;
+  xsdp = (XSDP *)rsdpResponse->address;
 
   setKernelState(KERNEL_INITIALIZATION);
 
@@ -108,9 +110,7 @@ void kmain(limine_framebuffer *frameBuffer, limine_memmap_response *memMap,
   uint64_t a = allocPage(64);
   allocator kernelAllocator;
   kernelAllocator.init(a, 64 * 4096);
-  void *b = kernelAllocator.alloc(1);
-  void *c = kernelAllocator.alloc(1);
-  kernelAllocator.free(c);
-  void *d = kernelAllocator.alloc(1);
-  kprintf("0x%x 0x%x\n", d, c);
+
+  kprintf("ACPI revision: %u\n", (uint64_t)getACPIVersion());
+  parseACPITable();
 }
