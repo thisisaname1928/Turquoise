@@ -12,7 +12,7 @@ void test_put(int x, int y, uint16_t ch) {
   x = x * 9;
   y = y * 16;
   // get glyph address
-  char *glyph = fontPointer + ch * 16;
+  char *glyph = fontPointer + (ch & 0xff) * 16;
   uint32_t *fba = (uint32_t *)glbf->address;
 
   // height
