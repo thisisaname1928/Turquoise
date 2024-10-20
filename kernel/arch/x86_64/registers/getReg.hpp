@@ -21,4 +21,5 @@ typedef struct {
 } registers;
 
 extern "C" void getReg();
+extern "C" void setReg();
 extern registers registersData;

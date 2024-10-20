@@ -1,4 +1,5 @@
 #include "kernel/arch/x86_64/IDT.hpp"
+#include "kernel/arch/x86_64/cpuid/cpuid.hpp"
 #include "kernel/arch/x86_64/exceptions/exceptions.hpp"
 #include "kernel/driver/acpi/acpiTable.hpp"
 #include "kernel/memoryAllocation.hpp"
@@ -75,7 +76,7 @@ void kmain(limine_framebuffer *frameBuffer, limine_memmap_response *memMap,
 
   for (uint64_t i = 0; i < frameBuffer->width; i++) {
     for (uint64_t j = 0; j < frameBuffer->height; j++) {
-      fba[j * (frameBuffer->pitch / 4) + i] = 0xD7F5E9;
+      fba[j * (frameBuffer->pitch / 4) + i] = 0xffffff;
     }
   }
 
@@ -113,4 +114,7 @@ void kmain(limine_framebuffer *frameBuffer, limine_memmap_response *memMap,
 
   kprintf("ACPI revision: %u\n", (uint64_t)getACPIVersion());
   parseACPITable();
+
+  kprintf("\nCPU VENDOR ID = %s\n", CPUID::getVendorIDString());
+  kprintf("i = %u", CPUID::checkCPUFeature(CPUID::CPUID_FEAT_HYPERVISOR));
 }

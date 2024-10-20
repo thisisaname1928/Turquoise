@@ -1,5 +1,6 @@
 bits 64
 global getReg
+global setReg
 global registersData
 section .text
 getReg:
@@ -20,6 +21,16 @@ getReg:
     mov qword [registersData.r14], r14
     mov qword [registersData.r15], r15
 
+    ret
+
+setReg:
+    mov rax, [registersData.rax]
+    mov rbx, [registersData.rbx]
+    mov rcx, [registersData.rcx]
+    mov rdx, [registersData.rdx]
+    mov rsi, [registersData.rsi]
+    mov rdi, [registersData.rdi]
+    
     ret
 
 section .data
